@@ -2,13 +2,19 @@ const db = require("../models");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
 
+const generateToken = async (id) => {
+  const token = jwt.sign({ id }, process.env.TOKEN_SECRET);
+  // await db.Token.create({ token });
+  return token;
+};
+
 const createUser = async (req, res, next) => {
     try {
-      let users = await db.user.findOne({ where: { email: req.body.email } });
+      let users = await db.user.findOne({ where: { username: req.body.username } });
   
       if (users)
         return res.status(409).json({
-          message: "Email already exist!",
+          message: "Username already exist!",
         });
   
       req.body.password = req.body.password
@@ -30,21 +36,22 @@ const createUser = async (req, res, next) => {
 
 
 const loginUser = (req, res, next) => {
-  let { email, password } = req.body;
+  let { username, password } = req.body;
   db.user
     .findOne({
     where: {
-        email: email,
+        username: username,
         password: md5(password),
       },
     })
     .then(async (result) => {
       if (result) {
         res.rest.success({
-        user_id: result.id,
+          token: await generateToken(result.user_id),
+          user_id: result.user_id,
         });
       } else {
-        res.rest.badRequest("email / password salah");
+        res.rest.badRequest("Username / password salah");
       }
     })
     .catch((error) => {
