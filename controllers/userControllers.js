@@ -34,7 +34,6 @@ const createUser = async (req, res, next) => {
     }
   };
 
-
 const loginUser = (req, res, next) => {
   let { username, password } = req.body;
   db.user

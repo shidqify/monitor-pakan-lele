@@ -40,8 +40,37 @@ const viewAllKolam = (req, res, next) => {
     });
 };
 
+const hitungPakan = async (req, res, next) => {
+  try {
+    let kolams = await db.kolam.findOne({ where: { kolam_id: req.body.kolam_id } });
+
+    if (kolams) {
+      
+
+      req.body.jumlah_pangan = (req.body.jumlah_lele * req.body.jumlah_lele) * 0.03;
+
+      kolams
+        .update(req.body)
+        .then((result) => {
+          if (result) {
+            return res.rest.success(`Pakan telah dihitung : ${req.body.jumlah_pangan}`);
+          }
+          return res.rest.badRequest("Pakan gagal dihitung");
+        })
+        .catch((err) => {
+          res.rest.badRequest(err);
+        })
+    }
+
+    
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   inputKolam,
   viewKolam,
   viewAllKolam,
+  hitungPakan,
 }

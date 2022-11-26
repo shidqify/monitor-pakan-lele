@@ -26,28 +26,28 @@ const hitungIkan = async (req, res, next) => {
         ukuran: req.body.ukuran,
       }
 
-      const hasilPh = true;
-      const hasilKadar = true;
-      const hasilWarna = true;
+      const hasilUmur = true;
+      const hasilBerat = true;
+      const hasilUkuran = true;
 
-      if (kategori.ph < 7 && kategori.ph > 8) {
-        hasilPh = false;
+      if (kategori.umur < 3) {
+        hasilUmur = false;
       }
-      if (kategori.kadar < 33 && kategori.kadar > 110) {
-        hasilKadar = false;
+      if (kategori.berat < 70) {
+        hasilBerat = false;
       }
-      if (kategori.warna != "hijau" && kategori.warna != "merah") {
-        hasilWarna = false;
+      if (kategori.ukuran < 20) {
+        hasilUkuran = false;
       }
 
-      if (hasilPh && hasilKadar && hasilWarna) {
-        return res.rest.success("Air masih dalam kondisi baik");
+      if (hasilUmur && hasilBerat && hasilUkuran) {
+        return res.rest.success("Ikan dalam kondisi sehat dan siap panen");
       } else {
-        return res.rest.success("Air sudah tidak dalam kondisi baik");
+        return res.rest.success("Ikan tidak dalam kondisi sehat atau siap panen");
       }
     } else {
       return res.status(404).json({
-        message: "Data air tidak ditemukan",
+        message: "Data ikan tidak ditemukan",
       });
     }    
   } catch (error) {
