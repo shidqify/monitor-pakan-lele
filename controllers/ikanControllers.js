@@ -80,9 +80,59 @@ const viewAllIkan = (req, res, next) => {
     });
 };
 
+const updateIkan = async (req, res, next) => {
+  try {
+    let dataIkan = await db.ikan.findOne({ where: { id: req.params.id } });
+
+    const updateData = {
+      umur : req.body.umur,
+      berat : req.body.berat,
+      ukuran : req.body.ukuran,
+    }
+
+    dataIkan
+      .update(updateData)
+      .then((result) => {
+        res.rest.success("Data ikan telah diperbaharui");
+      })
+      .catch((err) => {
+        res.rest.badRequest(err);
+      });
+  } catch (error) {
+    next(error);
+  }
+}
+
+const deleteIkan = async (req, res, next) => {
+  try {
+    const dataIkan = await db.ikan.findOne({ where: { id: req.params.id } });
+
+    if (dataIkan){
+      await dataIkan
+        .destroy()
+        .then((result) => {
+          if (result) {
+            res.rest.success("Data Ikan berhasil dihapus");
+          } else {
+            res.rest.notFound("Data Ikan tidak ditemukan");
+          }
+        })
+        .catch((err) => {
+          res.rest.badRequest(err);
+        });
+    } else {
+      return res.rest.notFound("Data Ikan tidak ditemukan");
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   inputIkan,
   hitungIkan,
   viewIkan,
   viewAllIkan,
+  updateIkan,
+  deleteIkan,
 }

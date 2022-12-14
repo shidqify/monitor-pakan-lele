@@ -68,9 +68,59 @@ const hitungPakan = async (req, res, next) => {
   }
 }
 
+const updateKolam = async (req, res, next) => {
+  try {
+    let dataKolam = await db.kolam.findOne({ where: { id: req.params.id } });
+
+    const updateData = {
+      jumlah_lele: req.body.jumlah_lele,
+      berat_rata: req.body.berat_rata,
+      luas_kolam: req.body.luas_kolam,
+    }
+
+    dataKolam
+      .update(updateData)
+      .then((result) => {
+        res.rest.success("Data Kolam telah diperbaharui");
+      })
+      .catch((err) => {
+        res.rest.badRequest(err);
+      });
+  } catch (error) {
+    next(error);
+  }
+}
+
+const deleteKolam = async (req, res, next) => {
+  try {
+    const dataKolam = await db.kolam.findOne({ where: { id: req.params.id } });
+
+    if (dataKolam){
+      await dataKolam
+        .destroy()
+        .then((result) => {
+          if (result) {
+            res.rest.success("Data Kolam berhasil dihapus");
+          } else {
+            res.rest.notFound("Data Kolam tidak ditemukan");
+          }
+        })
+        .catch((err) => {
+          res.rest.badRequest(err);
+        });
+    } else {
+      return res.rest.notFound("Data Kolam tidak ditemukan");
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   inputKolam,
   viewKolam,
   viewAllKolam,
   hitungPakan,
+  updateKolam,
+  deleteKolam,
 }

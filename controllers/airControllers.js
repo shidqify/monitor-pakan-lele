@@ -80,9 +80,59 @@ const viewAllAir = (req, res, next) => {
     });
 };
 
+const updateAir = async (req, res, next) => {
+  try {
+    let dataAir = await db.air.findOne({ where: { id: req.params.id } });
+
+    const updateData = {
+      ph_air : req.body.ph_air,
+      kadar_air : req.body.kadar_air,
+      warna_air : req.body.warna_air,
+    }
+
+    dataAir
+      .update(updateData)
+      .then((result) => {
+        res.rest.success("Data air telah diperbaharui");
+      })
+      .catch((err) => {
+        res.rest.badRequest(err);
+      });
+  } catch (error) {
+    next(error);
+  }
+}
+
+const deleteAir = async (req, res, next) => {
+  try {
+    const dataAir = await db.air.findOne({ where: { id: req.params.id } });
+
+    if (dataAir){
+      await dataAir
+        .destroy()
+        .then((result) => {
+          if (result) {
+            res.rest.success("Data Air berhasil dihapus");
+          } else {
+            res.rest.notFound("Data Air tidak ditemukan");
+          }
+        })
+        .catch((err) => {
+          res.rest.badRequest(err);
+        });
+    } else {
+      return res.rest.notFound("Data Air tidak ditemukan");
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   inputAir,
   hitungAir,
   viewAir,
   viewAllAir,
+  updateAir,
+  deleteAir,
 }
