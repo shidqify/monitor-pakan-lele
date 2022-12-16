@@ -73,8 +73,13 @@ const viewUser = async (req, res, next) => {
   };
 };
 
+const mainPage = (req, res, next) => {
+  res.rest.success("Hello World!");
+}
+
 module.exports = {
   createUser,
   loginUser,
   viewUser,
+  mainPage,
 }
