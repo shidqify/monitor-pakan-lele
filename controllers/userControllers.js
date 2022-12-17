@@ -24,10 +24,18 @@ const createUser = async (req, res, next) => {
       db.user
         .create(req.body)
         .then((result) => {
-          res.rest.success("Anda telah berhasil Mendaftar");
+          // res.rest.success("Anda telah berhasil Mendaftar");
+          res.status(201).json({
+            message: "Anda telah berhasil mendaftar!",
+            result: result,
+          })
         })
-        .catch((err) => {
-          res.rest.badRequest(err);
+        .catch((error) => {
+          // res.rest.badRequest(error);
+          res.status(500).json({
+            message: "Something went wrong!",
+            error: error,
+          })
         });
     } catch (error) {
       next(error);
