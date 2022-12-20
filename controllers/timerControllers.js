@@ -13,10 +13,15 @@ const inputTimer = async (req, res, next) => {
     db.timer
       .create(req.body)
       .then((result) => {
-        res.rest.success("Waktu berhasil diinput");
+        res.status(201).json({
+          message: "Waktu berhasil diinput",
+          result: result,
+        });
       })
       .catch((err) => {
-        res.rest.badRequest(err);
+        res.status(400).json({
+          message: err,
+        });
       })
   } catch (error) {
     next(error);
@@ -28,10 +33,17 @@ const viewTimer = async (req, res, next) => {
     const dataTimer = await db.timer.findOne({ where: { id: req.params.id } });
 
     if (!dataTimer) {
-      return res.rest.notFound("Timer Not Found")
+      // return res.rest.notFound("Timer Not Found")
+      return res.status(404).json({
+        message: "Timer not Found",
+      })
     }
 
-    res.rest.success({ timer: dataTimer });
+    // res.rest.success({ timer: dataTimer });
+    res.status(200).json({
+      message: "Timer ditemukan",
+      timer: dataTimer,
+    })
   } catch (error) {
     next(error);
   }
@@ -41,7 +53,10 @@ const viewAllTimer = (req, res, next) => {
   db.timer
     .findAll()
     .then((result) => {
-      res.rest.success(result);
+      // res.rest.success(result);
+      res.status(200).json({
+        result: result,
+      });
     })
     .catch((error) => {
       next(error);
@@ -59,10 +74,15 @@ const updateTimer = async (req, res, next) => {
     dataTimer
       .update(updateData)
       .then((result) => {
-        res.rest.success("Data Timer telah diperbaharui");
+        res.status(201).json({
+          message: "Data Timer telah diperbaharui",
+          result: result,
+        });
       })
       .catch((err) => {
-        res.rest.badRequest(err);
+        res.status(400).json({
+          message: err,
+        });
       });
   } catch (error) {
     next(error);
@@ -78,16 +98,25 @@ const deleteTimer = async (req, res, next) => {
         .destroy()
         .then((result) => {
           if (result) {
-            res.rest.success("Data Timer berhasil dihapus");
+            res.status(200).json({
+              message : "Data Timer berhasil dihapus",
+              result: result,
+            });
           } else {
-            res.rest.notFound("Data Timer tidak ditemukan");
+            res.status(404).json({
+              message: "Data Timer tidak ditemukan",
+            });
           }
         })
         .catch((err) => {
-          res.rest.badRequest(err);
+          res.status(400).json({
+            error: err,
+          });
         });
     } else {
-      return res.rest.notFound("Data Timer tidak ditemukan");
+      return res.status(404).json({
+        message: "Data Timer tidak ditemukan",
+      });
     }
   } catch (error) {
     next(error);

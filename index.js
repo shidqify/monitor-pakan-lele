@@ -41,9 +41,16 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   if (err.status === 404) {
-    res.rest.notFound("End point not found");
+    // res.rest.notFound("End point not found");
+    res.status(404).json({
+      message: "End point not found",
+    });
   } else {
     res.rest.serverError(err.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
     // res.rest.serverError(err.message || "Internal server error");
   }
 });

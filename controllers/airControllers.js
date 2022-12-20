@@ -5,10 +5,15 @@ const inputAir = (req, res, next) => {
     db.air
       .create(req.body)
       .then((result) => {
-        res.rest.success("Data air berhasil diinput");
+        res.status(200).json({
+          message: "Data air berhasil diinput",
+          result: result,
+        });
       })
       .catch((err) => {
-        res.rest.badRequest(err);
+        res.status(400).json({
+          error: err,
+        });
       })
   } catch (error) {
     next(error);
@@ -41,9 +46,14 @@ const hitungAir = async (req, res, next) => {
       }
 
       if (hasilPh && hasilKadar && hasilWarna) {
-        return res.rest.success("Air masih dalam kondisi baik");
+        return res.status(200).json({
+          message: "Air masih dalam kondisi baik",
+
+        });
       } else {
-        return res.rest.success("Air sudah tidak dalam kondisi baik");
+        return res.status(200).json({
+          message: "Air sudah tidak dalam kondisi baik"
+        });
       }
     } else {
       return res.status(404).json({
@@ -60,10 +70,14 @@ const viewAir = async (req, res, next) => {
     const dataAir = await db.air.findOne({ where: { id: req.params.id } });
 
     if (!dataAir) {
-      return res.rest.notFound("Air Not Found")
+      return res.status(404).json({
+        message: "Air Not Found",
+      })
     }
 
-    res.rest.success({ air: dataAir });
+    res.status(200).json({ 
+      air: dataAir,
+    });
   } catch (error) {
     next(error);
   }
@@ -73,7 +87,9 @@ const viewAllAir = (req, res, next) => {
   db.air
     .findAll()
     .then((result) => {
-      res.rest.success(result);
+      res.status(200).json({
+        result: result,
+      });
     })
     .catch((error) => {
       next(error);
@@ -93,10 +109,15 @@ const updateAir = async (req, res, next) => {
     dataAir
       .update(updateData)
       .then((result) => {
-        res.rest.success("Data air telah diperbaharui");
+        res.status(200).json({
+          message: "Data air telah diperbaharui",
+          result: result,
+        });
       })
       .catch((err) => {
-        res.rest.badRequest(err);
+        res.status(400).json({
+          error: err,
+        });
       });
   } catch (error) {
     next(error);
@@ -112,16 +133,25 @@ const deleteAir = async (req, res, next) => {
         .destroy()
         .then((result) => {
           if (result) {
-            res.rest.success("Data Air berhasil dihapus");
+            res.status(200).json({
+              message: "Data Air berhasil dihapus",
+              resutl: result,
+            });
           } else {
-            res.rest.notFound("Data Air tidak ditemukan");
+            res.status(404).json({
+              message: "Data Air tidak ditemukan",
+            });
           }
         })
         .catch((err) => {
-          res.rest.badRequest(err);
+          res.status(400).json({
+            error: err,
+          });
         });
     } else {
-      return res.rest.notFound("Data Air tidak ditemukan");
+      return res.status(404).json({
+        message: "Data Air tidak ditemukan",
+      });
     }
   } catch (error) {
     next(error);

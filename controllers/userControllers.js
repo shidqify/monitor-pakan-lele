@@ -32,7 +32,7 @@ const createUser = async (req, res, next) => {
         })
         .catch((error) => {
           // res.rest.badRequest(error);
-          res.status(500).json({
+          res.status(400).json({
             message: "Something went wrong!",
             error: error,
           })
@@ -53,12 +53,20 @@ const loginUser = (req, res, next) => {
     })
     .then(async (result) => {
       if (result) {
-        res.rest.success({
+        // res.rest.success({
+        //   token: await generateToken(result.user_id),
+        //   user_id: result.user_id,
+        // });
+        res.status(201).json({
           token: await generateToken(result.user_id),
           user_id: result.user_id,
         });
       } else {
-        res.rest.badRequest("Username / password salah");
+        // res.rest.badRequest("Username / password salah");
+        res.status(401).json({
+          message: "Username / password salah",
+          error: error,
+        })
       }
     })
     .catch((error) => {
@@ -71,18 +79,22 @@ const viewUser = async (req, res, next) => {
     const dataUser = await db.user.findOne({ where: { id: req.params.id } });
 
     if (!dataUser)
-      return res.rest.unauthorized(
+      return res.status(401).json(
         `Profile dengan ID ${req.params.id} tidak ditemukan`
       );
 
-    res.rest.success({ profile: dataUser });
+    res.status(200).json({ 
+      profile: dataUser 
+    });
   } catch (error) {
     next(error);
   };
 };
 
 const mainPage = (req, res, next) => {
-  res.rest.success("Hello World!");
+  res.status(200).json({
+    message: "Hello World!"
+  });
 }
 
 module.exports = {

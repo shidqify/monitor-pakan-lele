@@ -5,10 +5,15 @@ const inputKolam = (req, res, next) => {
     db.kolam
       .create(req.body)
       .then((result) => {
-        res.rest.created("Kolam berhasil diinput");
+        res.status(201).json({
+          message: "Kolam berhasil diinput",
+          result:  result,
+        });
       })
       .catch((error) => {
-        res.rest.badRequest(error);
+        res.status(400).json({
+          error: error,
+        })
       });
   } catch (error) {
     next(error);
@@ -20,10 +25,14 @@ const viewKolam = async (req, res, next) => {
     const dataKolam = await db.kolam.findOne({ where: { id: req.params.id } });
 
     if (!dataKolam) {
-      return res.rest.notFound("Kolam Not Found")
+      return res.status(404).json({
+        message:"Kolam Not Found",
+      })
     }
 
-    res.rest.success({ kolam: dataKolam });
+    res.status(200).json({
+      kolam: dataKolam ,
+    });
   } catch (error) {
     next(error);
   }
@@ -33,7 +42,9 @@ const viewAllKolam = (req, res, next) => {
   db.kolam
     .findAll()
     .then((result) => {
-      res.rest.success(result);
+      res.status(200).json({
+        result: result,
+      });
     })
     .catch((error) => {
       next(error);
@@ -53,16 +64,20 @@ const hitungPakan = async (req, res, next) => {
         .update(req.body)
         .then((result) => {
           if (result) {
-            return res.rest.success(`Pakan telah dihitung : ${req.body.jumlah_pangan}`);
+            return res.status(200).json(
+              `Pakan telah dihitung : ${req.body.jumlah_pangan}`
+            );
           }
-          return res.rest.badRequest("Pakan gagal dihitung");
+          return res.status(400).json({
+            message :"Pakan gagal dihitung",
+          });
         })
         .catch((err) => {
-          res.rest.badRequest(err);
+          res.status(400).json({
+            error: err,
+          });
         })
     }
-
-    
   } catch (error) {
     next(error);
   }
@@ -81,10 +96,15 @@ const updateKolam = async (req, res, next) => {
     dataKolam
       .update(updateData)
       .then((result) => {
-        res.rest.success("Data Kolam telah diperbaharui");
+        res.status(200).json({
+          message: "Data Kolam telah diperbaharui",
+          result: result,
+        });
       })
       .catch((err) => {
-        res.rest.badRequest(err);
+        res.status(400).json({
+          error: err,
+        });
       });
   } catch (error) {
     next(error);
@@ -100,16 +120,25 @@ const deleteKolam = async (req, res, next) => {
         .destroy()
         .then((result) => {
           if (result) {
-            res.rest.success("Data Kolam berhasil dihapus");
+            res.status(200).json({
+              message: "Data Kolam berhasil dihapus",
+              result: result,
+            });
           } else {
-            res.rest.notFound("Data Kolam tidak ditemukan");
+            res.status(404).json({
+              message: "Data Kolam tidak ditemukan"
+            });
           }
         })
         .catch((err) => {
-          res.rest.badRequest(err);
+          res.status(400).json({
+            erro: err,
+          });
         });
     } else {
-      return res.rest.notFound("Data Kolam tidak ditemukan");
+      return res.status(404).json({
+        message: "Data Kolam tidak ditemukan",
+      });
     }
   } catch (error) {
     next(error);

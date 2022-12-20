@@ -5,10 +5,15 @@ const inputIkan = (req, res, next) => {
     db.ikan
       .create(req.body)
       .then((result) => {
-        res.rest.success("Data ikan berhasil diinput");
+        res.status(200).json({
+          message: "Data ikan berhasil diinput",
+          result: result,
+        });
       })
       .catch((err) => {
-        res.rest.badRequest(err);
+        res.status(400).json({
+          error: err,
+        });
       })
   } catch (error) {
     next(error);
@@ -41,9 +46,13 @@ const hitungIkan = async (req, res, next) => {
       }
 
       if (hasilUmur && hasilBerat && hasilUkuran) {
-        return res.rest.success("Ikan dalam kondisi sehat dan siap panen");
+        return res.status(200).json({
+          message: "Ikan dalam kondisi sehat dan siap panen",
+        });
       } else {
-        return res.rest.success("Ikan tidak dalam kondisi sehat atau siap panen");
+        return res.status(200).json({
+          message: "Ikan tidak dalam kondisi sehat atau siap panen",
+        });
       }
     } else {
       return res.status(404).json({
@@ -60,10 +69,14 @@ const viewIkan = async (req, res, next) => {
     const dataIkan = await db.ikan.findOne({ where: { id: req.params.id } });
 
     if (!dataIkan) {
-      return res.rest.notFound("Ikan Not Found")
+      return res.status(404).json({
+        message: "Ikan Not Found",
+      });
     }
 
-    res.rest.success({ ikan: dataIkan });
+    res.status(200).json({ 
+      ikan: dataIkan 
+    });
   } catch (error) {
     next(error);
   }
@@ -73,7 +86,9 @@ const viewAllIkan = (req, res, next) => {
   db.ikan
     .findAll()
     .then((result) => {
-      res.rest.success(result);
+      res.status(200).json({
+        result: result,
+      });
     })
     .catch((error) => {
       next(error);
@@ -93,10 +108,15 @@ const updateIkan = async (req, res, next) => {
     dataIkan
       .update(updateData)
       .then((result) => {
-        res.rest.success("Data ikan telah diperbaharui");
+        res.status(200).json({
+          message: "Data ikan telah diperbaharui",
+          resul: result,
+        });
       })
       .catch((err) => {
-        res.rest.badRequest(err);
+        res.status(400).json({
+          error: err,
+        });
       });
   } catch (error) {
     next(error);
@@ -112,16 +132,24 @@ const deleteIkan = async (req, res, next) => {
         .destroy()
         .then((result) => {
           if (result) {
-            res.rest.success("Data Ikan berhasil dihapus");
+            res.status(200).json({
+              message: "Data Ikan berhasil dihapus",
+            });
           } else {
-            res.rest.notFound("Data Ikan tidak ditemukan");
+            res.status(404).json({
+              message: "Data Ikan tidak ditemukan"
+            });
           }
         })
         .catch((err) => {
-          res.rest.badRequest(err);
+          res.status(400).json({
+            error: err,
+          });
         });
     } else {
-      return res.rest.notFound("Data Ikan tidak ditemukan");
+      return res.status(404).json({
+        message: "Data Ikan tidak ditemukan",
+      });
     }
   } catch (error) {
     next(error);
