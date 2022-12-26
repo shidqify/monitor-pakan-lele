@@ -46,7 +46,6 @@ app.use((err, req, res, next) => {
       message: "End point not found",
     });
   } else {
-    // res.rest.serverError(err.message);
     res.status(500).json({
       message: "Internal server error",
       error: err,
