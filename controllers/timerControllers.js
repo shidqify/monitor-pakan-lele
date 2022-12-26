@@ -30,7 +30,7 @@ const inputTimer = async (req, res, next) => {
 
 const viewTimer = async (req, res, next) => {
   try {
-    const dataTimer = await db.timer.findOne({ where: { id: req.params.id } });
+    const dataTimer = await db.timer.findOne({ where: { timer_id: req.params.id } });
 
     if (!dataTimer) {
       // return res.rest.notFound("Timer Not Found")
@@ -65,7 +65,7 @@ const viewAllTimer = (req, res, next) => {
 
 const updateTimer = async (req, res, next) => {
   try {
-    let dataTimer = await db.timer.findOne({ where: { id: req.params.id } });
+    let dataTimer = await db.timer.findOne({ where: { timer_id: req.params.id } });
 
     const updateData = {
       waktu: req.body.waktu,
@@ -91,7 +91,7 @@ const updateTimer = async (req, res, next) => {
 
 const deleteTimer = async (req, res, next) => {
   try {
-    const dataTimer = await db.timer.findOne({ where: { id: req.params.id } });
+    const dataTimer = await db.timer.findOne({ where: { timer_id: req.params.id } });
 
     if (dataTimer){
       await dataTimer

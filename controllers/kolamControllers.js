@@ -22,7 +22,7 @@ const inputKolam = (req, res, next) => {
 
 const viewKolam = async (req, res, next) => {
   try {
-    const dataKolam = await db.kolam.findOne({ where: { id: req.params.id } });
+    const dataKolam = await db.kolam.findOne({ where: { kolam_id: req.params.id } });
 
     if (!dataKolam) {
       return res.status(404).json({
@@ -85,7 +85,7 @@ const hitungPakan = async (req, res, next) => {
 
 const updateKolam = async (req, res, next) => {
   try {
-    let dataKolam = await db.kolam.findOne({ where: { id: req.params.id } });
+    let dataKolam = await db.kolam.findOne({ where: { kolam_id: req.params.id } });
 
     const updateData = {
       jumlah_lele: req.body.jumlah_lele,
@@ -113,7 +113,7 @@ const updateKolam = async (req, res, next) => {
 
 const deleteKolam = async (req, res, next) => {
   try {
-    const dataKolam = await db.kolam.findOne({ where: { id: req.params.id } });
+    const dataKolam = await db.kolam.findOne({ where: { kolam_id: req.params.id } });
 
     if (dataKolam){
       await dataKolam

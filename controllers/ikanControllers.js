@@ -66,7 +66,7 @@ const hitungIkan = async (req, res, next) => {
 
 const viewIkan = async (req, res, next) => {
   try {
-    const dataIkan = await db.ikan.findOne({ where: { id: req.params.id } });
+    const dataIkan = await db.ikan.findOne({ where: { ikan_id: req.params.id } });
 
     if (!dataIkan) {
       return res.status(404).json({
@@ -97,7 +97,7 @@ const viewAllIkan = (req, res, next) => {
 
 const updateIkan = async (req, res, next) => {
   try {
-    let dataIkan = await db.ikan.findOne({ where: { id: req.params.id } });
+    let dataIkan = await db.ikan.findOne({ where: { ikan_id: req.params.id } });
 
     const updateData = {
       umur : req.body.umur,
@@ -125,7 +125,7 @@ const updateIkan = async (req, res, next) => {
 
 const deleteIkan = async (req, res, next) => {
   try {
-    const dataIkan = await db.ikan.findOne({ where: { id: req.params.id } });
+    const dataIkan = await db.ikan.findOne({ where: { ikan_id: req.params.id } });
 
     if (dataIkan){
       await dataIkan

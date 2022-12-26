@@ -67,7 +67,7 @@ const hitungAir = async (req, res, next) => {
 
 const viewAir = async (req, res, next) => {
   try {
-    const dataAir = await db.air.findOne({ where: { id: req.params.id } });
+    const dataAir = await db.air.findOne({ where: { air_id: req.params.id } });
 
     if (!dataAir) {
       return res.status(404).json({
@@ -98,7 +98,7 @@ const viewAllAir = (req, res, next) => {
 
 const updateAir = async (req, res, next) => {
   try {
-    let dataAir = await db.air.findOne({ where: { id: req.params.id } });
+    let dataAir = await db.air.findOne({ where: { air_id: req.params.id } });
 
     const updateData = {
       ph_air : req.body.ph_air,
@@ -126,7 +126,7 @@ const updateAir = async (req, res, next) => {
 
 const deleteAir = async (req, res, next) => {
   try {
-    const dataAir = await db.air.findOne({ where: { id: req.params.id } });
+    const dataAir = await db.air.findOne({ where: { air_id: req.params.id } });
 
     if (dataAir){
       await dataAir

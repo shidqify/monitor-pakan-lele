@@ -42,41 +42,55 @@ const createUser = async (req, res, next) => {
     }
   };
 
-const loginUser = (req, res, next) => {
-  let { username, password } = req.body;
-  db.user
-    .findOne({
-    where: {
-        username: username,
-        password: md5(password),
-      },
-    })
-    .then(async (result) => {
-      if (result) {
-        // res.rest.success({
-        //   token: await generateToken(result.user_id),
-        //   user_id: result.user_id,
-        // });
-        res.status(201).json({
-          token: await generateToken(result.user_id),
-          user_id: result.user_id,
-        });
-      } else {
-        // res.rest.badRequest("Username / password salah");
-        res.status(401).json({
-          message: "Username / password salah",
-          error: error,
-        })
-      }
-    })
-    .catch((error) => {
-      next(error);
-    });
+const loginUser = async (req, res, next) => {
+  try {
+    let { username, password } = req.body;
+
+    let users = await db.user.findOne({ where: { username: req.body.username } });
+
+    if (!users) {
+      return res.status(404).json({
+        message: "Username tidak ditemukan!",
+      })
+    }
+
+    db.user
+      .findOne({
+      where: {
+          username: username,
+          password: md5(password),
+        },
+      })
+      .then(async (result) => {
+        if (result) {
+          // res.rest.success({
+          //   token: await generateToken(result.user_id),
+          //   user_id: result.user_id,
+          // });
+          res.status(201).json({
+            token: await generateToken(result.user_id),
+            user_id: result.user_id,
+          });
+        } else {
+          // res.rest.badRequest("Username / password salah");
+          res.status(401).json({
+            message: "Username / password salah",
+            error: error,
+          })
+        }
+      })
+      .catch((error) => {
+        next(error);
+      });
+  } catch (error) {
+    next(error);
+  }
+  
 };
 
 const viewUser = async (req, res, next) => {
   try {
-    const dataUser = await db.user.findOne({ where: { id: req.params.id } });
+    const dataUser = await db.user.findOne({ where: { user_id: req.params.id } });
 
     if (!dataUser)
       return res.status(401).json(
