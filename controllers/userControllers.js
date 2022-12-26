@@ -96,9 +96,17 @@ const viewUser = async (req, res, next) => {
       return res.status(401).json(
         `Profile dengan ID ${req.params.id} tidak ditemukan`
       );
+    
+    const dataUserNoPass = {
+      user_id : dataUser.user_id,
+      username: dataUser.username,
+      nama_user: dataUser.nama_user,
+      createdAt: dataUser.createdAt,
+      updatedAt: dataUser.updatedAt
+    }
 
     res.status(200).json({ 
-      profile: dataUser 
+      profile: dataUserNoPass
     });
   } catch (error) {
     next(error);
