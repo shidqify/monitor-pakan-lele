@@ -31,12 +31,12 @@ const hitungAir = async (req, res, next) => {
         warna: airs.warna_air,
       }
 
-      if (kategori.ph < 7 && kategori.ph > 8) {
+      if (kategori.ph < 7 || kategori.ph > 8) {
         hasilPh = false;
       } else {
         hasilPh = true;
       }
-      if (kategori.kadar < 33 && kategori.kadar > 110) {
+      if (kategori.kadar < 33 || kategori.kadar > 110) {
         hasilKadar = false;
       } else {
         hasilKadar = true;
