@@ -58,7 +58,10 @@ const hitungPakan = async (req, res, next) => {
     if (kolams) {
       
 
-      const jumlah_pangan = (kolams.jumlah_lele * kolams.berat_rata) * 0.03;
+      const hasil_pangan = (kolams.jumlah_lele * kolams.berat_rata) * 0.03;
+      const jumlah_pangan = {
+        jumlah_pangan: hasil_pangan,
+      }
 
       kolams
         .update(jumlah_pangan)
