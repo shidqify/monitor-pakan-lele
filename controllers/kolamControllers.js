@@ -91,11 +91,50 @@ const hitungPakan = async (req, res, next) => {
 const updateKolam = async (req, res, next) => {
   try {
     let dataKolam = await db.kolam.findOne({ where: { kolam_id: req.params.id } });
+    
+    if (req.body.jumlah_lele == null) {
+      const jlh_lele = dataKolam.jumlah_lele;
+    } else {
+      const jlh_lele = req.body.jumlah_lele;
+    }
+
+    if (req.body.berat_rata == null) {
+      const berat = dataKolam.berat_rata;
+    } else {
+      const berat = req.body.berat_rata;
+    }
+
+    if (req.body.luas_kolam == null) {
+      const luas = dataKolam.luas_kolam;
+    } else {
+      const luas = req.body.luas_kolam;
+    }
+
+    if (req.body.air_id == null) {
+      const air = dataKolam.air_id;
+    } else {
+      const air = req.body.air_id;
+    }
+
+    if (req.body.ikan_id == null) {
+      const ikan = dataKolam.ikan_id;
+    } else {
+      const ikan = req.body.ikan_id;
+    }
+
+    if (req.body.timer_id == null) {
+      const timer = dataKolam.timer_id;
+    } else {
+      const timer = req.body.timer_id;
+    }
 
     const updateData = {
-      jumlah_lele: req.body.jumlah_lele,
-      berat_rata: req.body.berat_rata,
-      luas_kolam: req.body.luas_kolam,
+      jumlah_lele: jlh_lele,
+      berat_rata: berat,
+      luas_kolam: luas,
+      air_id: air,
+      ikan_id: ikan,
+      timer_id: timer,
     }
 
     dataKolam

@@ -22,7 +22,7 @@ const inputIkan = (req, res, next) => {
 
 const hitungIkan = async (req, res, next) => {
   try {
-    let ikans = await db.ikan.findOne({ where: { ikan_id: req.body.ikan_id } });
+    let ikans = await db.ikan.findOne({ where: { ikan_id: req.params.id } });
 
     if (ikans) {
       const kategori = {
@@ -98,11 +98,30 @@ const viewAllIkan = (req, res, next) => {
 const updateIkan = async (req, res, next) => {
   try {
     let dataIkan = await db.ikan.findOne({ where: { ikan_id: req.params.id } });
+  
+    if (req.body.umur == null){
+      const umur = dataIkan.umur;
+    } else {
+      const umur = req.body.umur;
+    }
+
+    if (req.body.berat == null){
+      const berat = dataIkan.berat;
+    } else {
+      const berat = req.body.berat;
+    }
+
+    if (req.body.ukuran == null){
+      const ukuran = dataIkan.ukuran;
+    } else {
+      const ukuran = req.body.ukuran;
+    }
+
 
     const updateData = {
-      umur : req.body.umur,
-      berat : req.body.berat,
-      ukuran : req.body.ukuran,
+      umur : umur,
+      berat : berat,
+      ukuran : ukuran,
     }
 
     dataIkan

@@ -22,7 +22,7 @@ const inputAir = (req, res, next) => {
 
 const hitungAir = async (req, res, next) => {
   try {
-    let airs = await db.air.findOne({ where: { air_id: req.body.air_id } });
+    let airs = await db.air.findOne({ where: { air_id: req.params.id } });
 
     if (airs) {
       const kategori = {
@@ -100,10 +100,26 @@ const updateAir = async (req, res, next) => {
   try {
     let dataAir = await db.air.findOne({ where: { air_id: req.params.id } });
 
+    if (req.body.ph_air == null) {
+      const ph = dataAir.ph_air;
+    } else {
+      const ph = req.body.ph_air;
+    }
+    if (req.body.kadar_air == null) {
+      const kadar = dataAir.kadar_air;
+    } else {
+      const kadar = req.body.kadar_air;
+    }
+    if (req.body.warna_air == null) {
+      const warna = dataAir.warna_air;
+    } else {
+      const warna = req.body.warna_air;
+    }
+
     const updateData = {
-      ph_air : req.body.ph_air,
-      kadar_air : req.body.kadar_air,
-      warna_air : req.body.warna_air,
+      ph_air : ph,
+      kadar_air : kadar,
+      warna_air : warna,
     }
 
     dataAir

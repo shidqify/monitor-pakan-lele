@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/input-ikan", authenticateToken, inputIkan);
 router.get("/view-ikan/:id", authenticateToken, viewIkan);
 router.get("/view-ikan", authenticateToken, viewAllIkan);
-router.post("/hitung-ikan", authenticateToken, hitungIkan);
+router.post("/hitung-ikan/:id", authenticateToken, hitungIkan);
 router.put("/update-ikan/:id", authenticateToken, updateIkan);
 router.delete("/delete-ikan/:id", authenticateToken, deleteIkan);
 
