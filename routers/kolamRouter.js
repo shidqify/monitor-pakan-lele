@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/input-kolam", authenticateToken, inputKolam);
 router.get("/view-kolam/:id", authenticateToken, viewKolam);
 router.get("/view-kolam", authenticateToken, viewAllKolam);
-router.put("/hitung-pakan", authenticateToken, hitungPakan);
+router.put("/hitung-pakan/:id", authenticateToken, hitungPakan);
 router.put("/update-kolam/:id", authenticateToken, updateKolam);
 router.delete("/delete-kolam/:id", authenticateToken, deleteKolam);
 
