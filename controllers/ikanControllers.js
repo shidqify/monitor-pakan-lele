@@ -26,23 +26,25 @@ const hitungIkan = async (req, res, next) => {
 
     if (ikans) {
       const kategori = {
-        umur: req.body.umur,
-        berat: req.body.berat,
-        ukuran: req.body.ukuran,
+        umur: ikans.umur,
+        berat: ikans.berat,
+        ukuran: ikans.ukuran,
       }
-
-      const hasilUmur = true;
-      const hasilBerat = true;
-      const hasilUkuran = true;
 
       if (kategori.umur < 3) {
         hasilUmur = false;
+      } else {
+        hasilUmur = true;
       }
-      if (kategori.berat < 70) {
+      if (kategori.berat * 100 < 70) {
         hasilBerat = false;
+      } else {
+        hasilBerat = true;
       }
       if (kategori.ukuran < 20) {
         hasilUkuran = false;
+      } else {
+        hasilUkuran = true;
       }
 
       if (hasilUmur && hasilBerat && hasilUkuran) {

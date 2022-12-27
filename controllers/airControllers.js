@@ -26,23 +26,25 @@ const hitungAir = async (req, res, next) => {
 
     if (airs) {
       const kategori = {
-        ph: req.body.ph_air,
-        kadar: req.body.kadar_air,
-        warna: req.body.warna_air,
+        ph: airs.ph_air,
+        kadar: airs.kadar_air,
+        warna: airs.warna_air,
       }
-
-      const hasilPh = true;
-      const hasilKadar = true;
-      const hasilWarna = true;
 
       if (kategori.ph < 7 && kategori.ph > 8) {
         hasilPh = false;
+      } else {
+        hasilPh = true;
       }
       if (kategori.kadar < 33 && kategori.kadar > 110) {
         hasilKadar = false;
+      } else {
+        hasilKadar = true;
       }
       if (kategori.warna != "hijau" && kategori.warna != "merah") {
         hasilWarna = false;
+      } else {
+        hasilWarna = true;
       }
 
       if (hasilPh && hasilKadar && hasilWarna) {
