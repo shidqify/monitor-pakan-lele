@@ -56,7 +56,7 @@ app.use((err, req, res, next) => {
 
 const dbOptions = {
   alter: true,
-  force: true,
+  // force: true,
 };
 
 const port = process.env.PORT || 5000;

@@ -53,20 +53,22 @@ const viewAllKolam = (req, res, next) => {
 
 const hitungPakan = async (req, res, next) => {
   try {
-    let kolams = await db.kolam.findOne({ where: { kolam_id: req.body.kolam_id } });
+    let kolams = await db.kolam.findOne({ where: { kolam_id: req.params.id } });
 
     if (kolams) {
       
 
-      req.body.jumlah_pangan = (req.body.jumlah_lele * req.body.jumlah_lele) * 0.03;
+      const jumlah_pangan = (kolams.jumlah_lele * kolams.berat_rata) * 0.03;
 
       kolams
-        .update(req.body)
+        .update(jumlah_pangan)
         .then((result) => {
           if (result) {
-            return res.status(200).json(
-              `Pakan telah dihitung : ${req.body.jumlah_pangan}`
-            );
+            return res.status(200).json({
+              message: "Pakan telah dihitung",
+              hasil: jumlah_pangan,
+              result: result
+            });
           }
           return res.status(400).json({
             message :"Pakan gagal dihitung",
