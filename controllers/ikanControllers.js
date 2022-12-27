@@ -100,21 +100,21 @@ const updateIkan = async (req, res, next) => {
     let dataIkan = await db.ikan.findOne({ where: { ikan_id: req.params.id } });
   
     if (req.body.umur == null){
-      const umur = dataIkan.umur;
+      umur = dataIkan.umur;
     } else {
-      const umur = req.body.umur;
+      umur = req.body.umur;
     }
 
     if (req.body.berat == null){
-      const berat = dataIkan.berat;
+      berat = dataIkan.berat;
     } else {
-      const berat = req.body.berat;
+      berat = req.body.berat;
     }
 
     if (req.body.ukuran == null){
-      const ukuran = dataIkan.ukuran;
+      ukuran = dataIkan.ukuran;
     } else {
-      const ukuran = req.body.ukuran;
+      ukuran = req.body.ukuran;
     }
 
 
